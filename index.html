@@ -8,6 +8,7 @@
 <body>
     <script>
         const NUM_CHOICES = 3;
+        const NUM_ROUNDS = 5;
         let playerScore = 0;
         let computerScore = 0;
 
@@ -59,7 +60,7 @@
         }
 
         function game() {
-            for (let i = 0; i < 5; i++) {
+            for (let i = 0; i < NUM_ROUNDS; i++) {
                 let playerSelection = prompt("Rock, paper, or scissors..?");
                 console.log(playRound(playerSelection, getComputerChoice()));
             }
