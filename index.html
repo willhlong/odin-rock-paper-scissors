@@ -6,12 +6,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rock Paper Scissors</title>
 <body>
+    <button id="rock">Rock</button>
+    <button id="paper">Paper</button>
+    <button id="scissors">Scissors</button>
+    <div class="score-container"></div>
     <script>
         const NUM_CHOICES = 3;
         const NUM_ROUNDS = 5;
+        const scoreContent = document.createElement('div');
+        const roundResults = document.createElement('div');
+        const scoreContainer = document.querySelector(".score-container");
         let playerScore = 0;
         let computerScore = 0;
 
+        scoreContainer.appendChild(scoreContent);
+        scoreContainer.appendChild(roundResults);
+
+        let buttons = document.querySelectorAll("button");
+        buttons.forEach((button) => {
+            button.addEventListener('click', () => {
+                playRound(button.id, getComputerChoice());
+            })
+        })
         function getComputerChoice() {
             const choices = ["ROCK", "PAPER", "SCISSORS"];
             let randomNumber = Math.floor(Math.random() * NUM_CHOICES);
@@ -22,6 +38,7 @@
             playerSelection = playerSelection.toUpperCase();
             let playerWins = false;
             let computerWins = false;
+
             if (playerSelection === "ROCK") {
                 if (computerSelection === "PAPER") {
                     computerWins = true;
@@ -30,7 +47,7 @@
                     playerWins = true;
                 }
             }
-            if (playerSelection === "PAPER") {
+            else if (playerSelection === "PAPER") {
                 if (computerSelection === "SCISSORS") {
                     computerWins = true;
                 }
@@ -38,7 +55,7 @@
                     playerWins = true;
                 }
             }
-            if (playerSelection === "SCISSORS") {
+            else if (playerSelection === "SCISSORS") {
                 if (computerSelection === "ROCK") {
                     computerWins = true;
                 }
@@ -48,27 +65,28 @@
             }
             if (computerWins) {
                 computerScore = computerScore + 1;
-                return "You lose! " + computerSelection + " beats " + playerSelection + "...";
+                roundResults.textContent = "You lose! " + computerSelection + 
+                                           " beats " + playerSelection + "...";
             }
             else if (playerWins) {
                 playerScore = playerScore + 1;
-                return "You win! " + playerSelection + " beats " + computerSelection + "...";
+                roundResults.textContent = "You win! " + playerSelection + 
+                                           " beats " + computerSelection + "...";
             }
             else {
-                return "You tied! Neither pick won...";
+                roundResults.textContent = "You tied! Neither pick won...";
             }
-        }
-
-        function game() {
-            for (let i = 0; i < NUM_ROUNDS; i++) {
-                let playerSelection = prompt("Rock, paper, or scissors..?");
-                console.log(playRound(playerSelection, getComputerChoice()));
+            scoreContent.innerHTML = "Current Score<br>Player: " + playerScore +
+                                       "<br>Computer: " + computerScore;
+            if (computerScore === 5) {
+                roundResults.textContent = "Game over! You lost to the computer... Better luck next time!";
+                playerScore = 0;
+                computerScore = 0;
             }
-            console.log("Final Score:\nPlayer: " + playerScore + "\nComputer: " + computerScore)
-            if (playerScore > computerScore) {
-                console.log("Congratulations! You beat the computer...");
-            } else {
-                console.log("Bummer. You lost to the computer. Better luck next time...");
+            else if (playerScore === 5) {
+                roundResults.textContent = "Game over! You beat the computer... Congratulations!";
+                playerScore = 0;
+                computerScore = 0;
             }
         }
     </script>
